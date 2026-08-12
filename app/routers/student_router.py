@@ -24,12 +24,12 @@ def authenticate(credentials: HTTPAuthorizationCredentials):
 # 1. GET ALL STUDENTS
 @router.get("/")
 def students(session: Session = Depends(get_session)):
-    student= session.exec(select(Student)).all()
+    students= session.exec(select(Student)).all()
     
     if len(students) == 0:
         seed_students()
-        student=session.exec(select(Student)).all()
-    return student
+        students=session.exec(select(Student)).all()
+    return students
  
 # 2. CREATE STUDENT
 @router.post("/")
