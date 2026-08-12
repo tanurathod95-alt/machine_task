@@ -4,6 +4,7 @@ from sqlmodel import Session, select
 from app.database import get_session
 from app.models.student import Student
 from app.auth import verify_token
+from app.seed.seed_runner import seed_students
  
 router = APIRouter(prefix="/students",tags=["Students"])
 security = HTTPBearer()
@@ -24,6 +25,11 @@ def authenticate(credentials: HTTPAuthorizationCredentials):
 @router.get("/")
 def students(session: Session = Depends(get_session)):
     return session.exec(select(Student)).all()
+
+if len(students) == 0:
+    seed_students()
+    student=session.exec(select(Student)).all()
+    return student
  
 # 2. CREATE STUDENT
 @router.post("/")
